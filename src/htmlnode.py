@@ -18,8 +18,19 @@ class HTMLNode:
 		string = reduce(lambda acc, key: acc + f' {key}="{self.props[key]}"', self.props, '')
 		return string
 
+	def __eq__(self, other):
+		if (
+			self.tag == other.tag and
+			self.value == other.value and
+			self.children == other.children and
+			self.props == other.props
+			):
+			return True
+		return False
+
 	def __repr__(self):
-		print(f'HTMLNode({self.tag}, {self.value}, {self.children}, {self.url})')
+
+		return f'HTMLNode({self.tag}, {self.value}, {self.children}, {self.props})'
 
 class LeafNode(HTMLNode):
 	def __init__(self, tag=None, value=None, children=None, props=None):
@@ -52,7 +63,3 @@ class ParentNode(HTMLNode):
 			string += child.to_html()
 
 		return f"<{self.tag}>{string}</{self.tag}>"
-		
-
-
-			#return f"<{self.tag}>{self.children[0].to_html(children[:1])}</{self.tag}>"
