@@ -30,7 +30,7 @@ class TextNode:
 		return False
 
 	def __repr__(self):
-		return f"TextNode({self.text}, {self.text_type}, {self.url})"
+		return f"TextNode({self.text}, {self.text_type}, {self.url})\n"
 
 
 
@@ -73,10 +73,9 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
 	new_nodes = []
 	delimiters = ('*', '**', '`')
 	regexes = (r'(?<!\*)\*(?!\*)', r'\*\*', r'`')
-	#print(old_nodes[0].text_type)
+
 	#handle nodes of type TEXT, not sure if there will be empty stri g if delimiter is at beginning of string
-	#print(old_nodes)
-	loop_count = 0
+
 	for node in old_nodes:
 		#print(node.text_type)
 		#handle nodes with other text types( bold, italic, etc)
@@ -91,80 +90,75 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
 			if not delim_count % 2 == 0:
 				raise Exception('invalid Markdown syntax')
 
+			
+			# figure out whther list of string starts with MD block or plain text block
+				#based on presence of empty string at index 0 or not
 			text_split = re.split(regexes[d_index], node.text)
-			#text_split = node.text.split(delimiter)
 			if text_split[0] == "":
 				start_switch = 0 #starting with MD block
 			else:
 				start_switch = 1 #starting with plain text
+			
 			#if first or last string is empty, remove from list, odd/even switch below, del empty string
 			#get rid of empty strings
 			text_split = list(filter(lambda x: x != "", text_split))
-			#print(loop_count)
-			#print(text_split)
+			
 			#if first is empty, we know odds are going to be diff text type, evens are just plain text
-			#otherwise, other way round
-			#print(start_switch)
-			#need to count delims first and raise ex if odd count outide loop? use node.text somehow?
-			#delim_count = 0
+				#otherwise, other way round
 			for string_index in range(0, len(text_split)):
 				if (string_index + 1) % 2 == start_switch:
 					#print('test')
 					new_nodes.append(TextNode(text_split[string_index], TextType.TEXT, node.url))
 				else:
 					new_nodes.append(TextNode(text_split[string_index], text_type, node.url))
-		#loop_count += 1
 	return new_nodes
 
-def create_old_nodes():
+#function to partially parse document string into list of TextNode objects, all of type TextNode.TEXT
+	#to feed into split_nodes_delimiter function
+def create_old_nodes(string):
 	old_nodes = []
-	#string = 'dfgdafg `dsg sdfgg s*dfgg sdfgsdfgsdhfa'
-	string = 'Decision *was* made to **forego** `testing` exeption raising **functionality** since `python3`'
-	doc_invalid = 'library modules catch this\nexception before the text node\ncan be passed to my function'
-	doc3 = 'Will use try/except block around text node instantiation in main()'
 
+	
+	#Using these two tuples in parallel to find/ delimiters.  delim and corrsponding
+		#regex need to have same index
 	delimiters = ('*', '**', '`')
 	regexes = (r'(?<!\*)\*(?!\*)', r'\*\*', r'`')
 	
-	#break off chunks
 	current_delim = ""
 	current_delim_pos = -1
 
 	remaining_string = string
-	# loop to breakdown string into list of strings every time a delim is encountered that is not the current delim
-
-	# while there are still delimiters in the remaining string
+	
 	string_list = []
-	loop_count = 0
-
-
 	
-
-	
+	# while there are still delimiters in the remaining string
+	# loop to breakdown string into list of strings every time a delim is encountered that is not the current delim
 	while(current_delim_pos != float('inf') and remaining_string != ''):
 		
 		current_delim_pos = float('inf')
 		#find first delim type in remaining_string
 		for i in range(0, len(delimiters)):
 
-
+			#find regex that corresponds to delim
 			match = re.search(regexes[i], remaining_string) #find delim
 			if match and match.start() < current_delim_pos:
-					current_delim_pos = match.start()  # gets the starting position of the match
+					current_delim_pos = match.start()  # gets the starting position of the delim
 					current_delim = delimiters[i]
-					current_regex = regexes[i]		# or you can use match.end() for the ending position
+					current_regex = regexes[i]
 			else:
+				#if current delim type being searched for is not found, skip iteration to look for next delim type
 				continue
 
 		
-
+		#if no delims found, put entire remaining string into string list break out of loop
 		if current_delim_pos == float('inf'):
 			string_list.append(remaining_string)
-			#print(string_list)
 			break
 		
 
 		# create new delim tuple and regex tuple without current_delim an delim regex
+			#in order to use same process as above to find next delim type
+			#creates tuples with the remaining delim types that have not been encountered yet
 		delim_index = delimiters.index(current_delim)
 		new_delims = delimiters[:delim_index] + delimiters[delim_index + 1:]
 		regex_index = regexes.index(current_regex)
@@ -172,54 +166,50 @@ def create_old_nodes():
 		
 		
 		
-		#reset current_delim_pos to inf, otherwise it will always be 0, less than pos of next delim type
+		#reset current_delim_pos to inf for comparison later if no delims found searching for next delim type
 		current_delim_pos = float('inf')
 
 
-
+		#find next delim type in doc string using same process for finding the first one above
 		for i in range(0, len(new_delims)):
 
 
 			match = re.search(new_regexes[i], remaining_string) #find delim
 			if match and match.start() < current_delim_pos:
-					current_delim_pos = match.start()  # gets the starting position of the match
+					current_delim_pos = match.start()  # gets the starting position of the next delim type
 					current_delim = new_delims[i]
-					current_regex = new_regexes[i]		# or you can use match.end() for the ending position
+					current_regex = new_regexes[i]
 			else:
+				#skip iteration if curent delim type not found
 				continue
 
-
 		
-		
-		
-		
+		#if no other delims found, put entire remaining string into string list break out of loop
 		if current_delim_pos == float('inf'):
 			string_list.append(remaining_string)
-			#print('\n')
-			#print(string_list)
 			break
-		
-		
+				
 
 		#split off one chunk on current_delim, append to list of strings to iterate through later
-
 		chunk = remaining_string[:current_delim_pos]
 		string_list.append(chunk)
+
+		#set remaining string to eveything except the chunk that was split off from the beginning
 		remaining_string = remaining_string[current_delim_pos:]
 		
 
 		#repeat for remainder of string while current_delim_pos != -1
-		loop_count += 1
 
-
-	types = (TextType.ITALIC, TextType.BOLD, TextType.CODE)
-	for i in range(0, len(string_list)):
-		for j in range(0, len(delimiters)):
-			match = re.search(regexes[j], string_list[i]) #find delim
-			if match:
-				nodetype = types[j]
-				delim = delimiters[j]
-				break
-		old_nodes.append(TextNode(string_list[i], TextType.TEXT))
+	# this code may prove useful for something later
+	# SAVE - types = (TextType.ITALIC, TextType.BOLD, TextType.CODE)
+	# SAVE - for i in range(0, len(string_list)):
+	# SAVE - 	for j in range(0, len(delimiters)):
+	# SAVE - 		match = re.search(regexes[j], string_list[i]) #find delim
+	# SAVE - 		if match:
+	# SAVE - 			nodetype = types[j]
+	# SAVE - 			delim = delimiters[j]
+	# SAVE - 			break
+	for string in string_list:
+		old_nodes.append(TextNode(string, TextType.TEXT))
 
 	return old_nodes
