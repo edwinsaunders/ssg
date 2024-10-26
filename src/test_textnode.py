@@ -59,5 +59,16 @@ class Test_text_node_to_html_node(unittest.TestCase):
         # library modules catch this exception before the text node can be passed to my function
         # Will use try/except block around text node instantiation in main() 
 
+class Test_split_nodes_delimiter(unittest.TestCase):
+    #test input sets
+        #need several old_nodes lists, delimiters, and text_types
+        #will create old nodes in each function from several document strings
+    doc_perfect = 'Decision *was* made to **forego**\n`testing` exeption raising\n**functionality** since `python3`'
+    doc_invalid = 'library modules catch this\nexception before the text node\ncan be passed to my function'
+    doc3 = 'Will use try/except block around text node instantiation in main()'
+
+
+    #test functions
+
 if __name__ == "__main__":
     unittest.main()

@@ -2,25 +2,18 @@ from textnode import *
 
 def main():
 
-    #node = TextNode("dummy text", TextType.BOLD, "http://www.zombo.com")
-    #print(node)
-    #textnode_t = TextNode("text", TextType.TEXT, None)
-    #textnode_b = TextNode("bold text", TextType.BOLD, None)
-    #textnode_it = TextNode("italic text", TextType.ITALIC, None)
-    #textnode_c = TextNode("def codetext(): return", TextType.CODE, None)
-    #textnode_l = TextNode("link text", TextType.LINK, "http://www.test.com")
-    #textnode_im = TextNode("img alt text", TextType.IMAGE, "http://www.imgsrc.com")
-
-    doc = "hgjhghg `hghghg`\n`hjhggf` dfg dtyfyu\njhgfj `hfjf` gffgfk\njhgfddhg `sestres`"
+    #doc = "hgjhghg `hghghg`\n`hjhggf` dfg dtyfyu\njhgfj `hfjf` gffgfk\njhgfddhg `sestres`"
     nodes = []
-    lines = doc.split('\n')
-    for string in lines:
-        nodes.append(TextNode(string, TextType.TEXT))
+    #lines = doc.split('\n')
+    #for string in lines:
+    #    nodes.append(TextNode(string, TextType.TEXT))
 
-    print(nodes)
+    nodes = create_old_nodes()
 
     new_nodes = split_nodes_delimiter(nodes, '`', TextType.CODE)
+    new_new_nodes = split_nodes_delimiter(new_nodes, '*', TextType.ITALIC)
+    new_new_new_nodes = split_nodes_delimiter(new_new_nodes, '**', TextType.BOLD)
 
-    print(new_nodes)
-
+    print(new_new_new_nodes)
+    
 main()
