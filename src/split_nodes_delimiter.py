@@ -11,7 +11,7 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
 	for node in old_nodes:
 		#print(node.text_type)
 		#handle nodes with other text types( bold, italic, etc)
-		if node.text_type is not TextType.TEXT:
+		if node.text_type != 'text':
 			new_nodes.append(node)
 		else:
 			d_index = delimiters.index(delimiter)

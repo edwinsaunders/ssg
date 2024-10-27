@@ -1,5 +1,6 @@
 import unittest
 from textnode import *
+from text_node_to_html_node import *
 
 class Test_text_node_to_html_node(unittest.TestCase):
 	
@@ -30,7 +31,7 @@ class Test_text_node_to_html_node(unittest.TestCase):
 		compare_node = LeafNode('img', "", None, {'src': 'http://www.imgsrc.com', 'alt': "img alt text"})       
 		self.assertEqual(text_node_to_html_node(self.textnode_im), compare_node)
 	
-	# Decision was made to forego testing exeption raising functionality since python3
+	# Decision was made to forego testing of exeption raising functionality since python3
 		# library modules catch this exception before the text node can be passed to my function
 		# Will use try/except block around text node instantiation in main() 
 
