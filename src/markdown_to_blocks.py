@@ -1,9 +1,9 @@
-def markdown_to_blocks(filename):
+def markdown_to_blocks(markdown):
 
-	with open(filename, 'r') as file:
-		content = file.read()
+	#with open(filename, 'r') as file:
+	#	content = file.read()
 
-	block_split = content.split('\n\n')
+	block_split = markdown.split('\n\n')
 	
 	block_split_stripped = []
 	
