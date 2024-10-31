@@ -50,7 +50,7 @@ def markdown_to_html_node(markdown):
 				
 				children = text_to_children(text)
 
-				code_node = ParentNode("code", children)
+				code_node = [ParentNode("code", children)]
 				#code_list.append(node)
 				#leaf_nodes.append(node)
 				html_nodes.append(ParentNode('pre', code_node))
@@ -61,10 +61,10 @@ def markdown_to_html_node(markdown):
 				#print(list_items)
 				new_list = []
 				for item in list_items:
-					if not item.startswith('>'):
+					if not item.startswith('> '):
 						raise ValueError("Invalid quote block")
 
-					new_list.append(item[1:]) # slice off the '>'
+					new_list.append(item[2:]) # slice off the '> '
 				#print(new_list)
 				#print('\n'.join(new_list))
 				text = ' '.join(new_list)

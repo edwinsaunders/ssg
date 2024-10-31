@@ -1,6 +1,7 @@
 import shutil
 import os
 from textnode import *
+from markdown_to_html_node import *
 
 def main():
     
@@ -13,6 +14,8 @@ def main():
     
     print(f"copying files from {source_dir} to {dest_dir}")
     copy_files_recursive(source_dir, dest_dir)
+
+    generate_page('content/index.md', 'template.html', 'public/index.html')
     """
     #check if both source and dest path exist
     if not os.path.exists(source_dir) or not os.path.exists(dest_dir):
@@ -57,6 +60,39 @@ def copy_files_recursive(source_dir, dest_dir):
             shutil.copy(source_path, dest_path)
         else:
             copy_files_recursive(source_path, dest_path)
+
+
+def extract_title(markdown):
+    header = markdown.split('\n', maxsplit=1)
+
+    if header[0][:2] != "# ":
+        raise ValueError('no h1 header found')
+    return header[0][2:]
+
+def generate_page(from_path, template_path, dest_path):
+    print(f"Generating page from {from_path} to {dest_path} using {template_path}")
+    file_obj = open(from_path)
+    md_content = file_obj.read()
+
+    file_obj = open(template_path)
+    template_content = file_obj.read()
+
+    html_node = markdown_to_html_node(md_content)
+    html = html_node.to_html()
+
+    title = extract_title(md_content)
+
+    new_html1 = template_content.replace('{{ Content }}', html)
+    new_html2 = new_html1.replace('{{ Title }}', title)
+
+
+    file_obj = open(dest_path, 'wt')
+    file_obj.write(new_html2)
+
+
+
+
+
 
 main()
 
