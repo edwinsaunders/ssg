@@ -29,13 +29,12 @@ class HTMLNode:
 		return False
 
 	def __repr__(self):
-
-		return f'HTMLNode({self.tag}, {self.value}, {self.children}, {self.props})'
+		return f"HTMLNode({self.tag}, {self.value}, {self.children}, {self.props})\n"
 
 class LeafNode(HTMLNode):
-	def __init__(self, tag=None, value=None, children=None, props=None):
+	def __init__(self, tag=None, value=None, props=None):
 				
-		super().__init__(tag, value, children, props)
+		super().__init__(tag, value, props)
 
 
 	def to_html(self):
@@ -44,6 +43,10 @@ class LeafNode(HTMLNode):
 		if not self.tag:
 			return self.value
 		return f"<{self.tag}>{self.value}</{self.tag}>"
+
+	def __repr__(self):
+		raw_value = repr(self.value)
+		return f"LeafNode({self.tag}, {raw_value}, {self.props})\n"
 
 class ParentNode(HTMLNode):
 	def __init__(self, tag=None, children=None, props=None):
@@ -63,3 +66,6 @@ class ParentNode(HTMLNode):
 			string += child.to_html()
 
 		return f"<{self.tag}>{string}</{self.tag}>"
+
+	def __repr__(self):
+		return f"ParentNode({self.tag}, {self.children}, {self.props})\n"

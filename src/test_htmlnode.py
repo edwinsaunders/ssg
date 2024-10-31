@@ -37,7 +37,6 @@ class TestHTMLNode(unittest.TestCase):
     def test_to_html_typical(self):
         node = LeafNode(
             "p", "this is a\nparagraph\n", 
-            None, 
             {
             'href': 'http://www.x.com', 
             'blah': 'poopoo', 'third': 'i dunno'
@@ -49,7 +48,6 @@ class TestHTMLNode(unittest.TestCase):
     def test_to_html_noValue(self):
         node = LeafNode(
             "p", "", 
-            None, 
             {
             'href': 'http://www.x.com', 
             'blah': 'poopoo', 'third': 'i dunno'
@@ -61,7 +59,6 @@ class TestHTMLNode(unittest.TestCase):
     def test_to_html_noTag(self):
         node = LeafNode(
             "", "this is a\nparagraph\n", 
-            None, 
             {
             'href': 'http://www.x.com', 
             'blah': 'poopoo', 'third': 'i dunno'
@@ -76,7 +73,6 @@ class TestHTMLNode(unittest.TestCase):
     def test_to_html_oneChild(self):
         child = LeafNode(
             "b", "this is a\nparagraph\n", 
-            None, 
             {
             'href': 'http://www.x.com', 
             'blah': 'poopoo', 'third': 'i dunno'
@@ -96,7 +92,6 @@ class TestHTMLNode(unittest.TestCase):
     def test_to_html_nestedParents(self):
         leaf = LeafNode(
             "b", "this is a\nparagraph\n", 
-            None, 
             {
             'href': 'http://www.x.com', 
             'blah': 'poopoo', 'third': 'i dunno'
@@ -123,13 +118,13 @@ class TestHTMLNode(unittest.TestCase):
 
     def test_to_html_complex(self):
 
-        lnodeB2 = LeafNode("d", "blah", None, None)
+        lnodeB2 = LeafNode("d", "blah", None)
 
-        lnodeB1 = LeafNode("c", "blahblah", None, None)
+        lnodeB1 = LeafNode("c", "blahblah", None)
 
         pnodeB  = ParentNode("a", [lnodeB1, lnodeB2], None)
 
-        lnodeA1 = LeafNode("b", "this is a\nparagraph\n", None, None)
+        lnodeA1 = LeafNode("b", "this is a\nparagraph\n", None)
 
         pnodeA = ParentNode("p", [lnodeA1], None)
             
@@ -145,7 +140,7 @@ class TestHTMLNode(unittest.TestCase):
         self.assertRaises(ValueError, node.to_html)
 
     def test_to_html_Tag(self):
-        node2 = LeafNode("d", "blah", None, None)
+        node2 = LeafNode("d", "blah", None)
         node = ParentNode(None, [node2], None)
         
         self.assertRaises(ValueError, node.to_html)

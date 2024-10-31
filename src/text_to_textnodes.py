@@ -2,6 +2,7 @@ from textnode import *
 from split_nodes_delimiter import *
 from split_nodes_imgORlink import *
 
+#takes a text string and returns list of text nodes
 def text_to_textnodes(text):
 	new_nodes = []
 	start_node = [TextNode(text, TextType.TEXT)]

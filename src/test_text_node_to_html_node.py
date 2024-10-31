@@ -13,22 +13,22 @@ class Test_text_node_to_html_node(unittest.TestCase):
 
 
 	def test_text(self):        
-		compare_node = LeafNode(None, "text", None, None)       
+		compare_node = LeafNode(None, "text", None)       
 		self.assertEqual(text_node_to_html_node(self.textnode_t), compare_node)
 	def test_bold(self):
-		compare_node = LeafNode('b', "bold text", None, None)       
+		compare_node = LeafNode('b', "bold text", None)       
 		self.assertEqual(text_node_to_html_node(self.textnode_b), compare_node)
 	def test_italic(self):
-		compare_node = LeafNode('i', "italic text", None, None)     
+		compare_node = LeafNode('i', "italic text", None)     
 		self.assertEqual(text_node_to_html_node(self.textnode_it), compare_node)
 	def test_code(self):
-		compare_node = LeafNode('code', "def codetext(): return", None, None)       
+		compare_node = LeafNode('code', "def codetext(): return", None)       
 		self.assertEqual(text_node_to_html_node(self.textnode_c), compare_node)
 	def test_link(self):
-		compare_node = LeafNode('a', "link text", None, {'href': 'http://www.test.com'})        
+		compare_node = LeafNode('a', "link text", {'href': 'http://www.test.com'})        
 		self.assertEqual(text_node_to_html_node(self.textnode_l), compare_node)
 	def test_image(self):
-		compare_node = LeafNode('img', "", None, {'src': 'http://www.imgsrc.com', 'alt': "img alt text"})       
+		compare_node = LeafNode('img', "", {'src': 'http://www.imgsrc.com', 'alt': "img alt text"})       
 		self.assertEqual(text_node_to_html_node(self.textnode_im), compare_node)
 	
 	# Decision was made to forego testing of exeption raising functionality since python3
