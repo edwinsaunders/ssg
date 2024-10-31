@@ -32,14 +32,14 @@ def block_to_block_type(block):
 		numhash = prefix.count('#')
 		if numhash <= 6:
 			#print(BlockType.HEADING)
-			return BlockType.HEADING
+			return 'heading'
 
 	#find code
 	regex1 = r'^```'
 	regex2 = r'```$'
 	if re.findall(regex1, block) and re.findall(regex2, block):
 		#print(BlockType.CODE)
-		return BlockType.CODE
+		return 'code'
 	
 
 	#Quote logic:
@@ -52,7 +52,7 @@ def block_to_block_type(block):
 			#return
 	if isQuote == True:
 		#print(BlockType.QUOTE)
-		return BlockType.QUOTE
+		return "quote"
 
 
 
@@ -79,7 +79,7 @@ def block_to_block_type(block):
 	#print(isUnord)
 	if isUnord == True:
 		#print(BlockType.UNORDERED_LIST)
-		return BlockType.UNORDERED_LIST
+		return "unordered_list"
 
 
 
@@ -119,10 +119,10 @@ def block_to_block_type(block):
 			break
 	if isOrderedList == True:
 		#print(BlockType.ORDERED_LIST)
-		return BlockType.ORDERED_LIST
+		return 'ordered_list'
 	else:
 		#print(BlockType.PARAGRAPH)
-		return BlockType.PARAGRAPH
+		return "paragraph"
 
 
 #block_to_block_type()

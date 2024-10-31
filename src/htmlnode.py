@@ -46,7 +46,9 @@ class LeafNode(HTMLNode):
 
 	def __repr__(self):
 		raw_value = repr(self.value)
-		return f"LeafNode({self.tag}, {raw_value}, {self.props})\n"
+		if not self.tag:
+			return f"LeafNode({self.tag}, {raw_value}, {self.props})"
+		return f"LeafNode('{self.tag}', {raw_value}, {self.props})"
 
 class ParentNode(HTMLNode):
 	def __init__(self, tag=None, children=None, props=None):
@@ -68,4 +70,6 @@ class ParentNode(HTMLNode):
 		return f"<{self.tag}>{string}</{self.tag}>"
 
 	def __repr__(self):
-		return f"ParentNode({self.tag}, {self.children}, {self.props})\n"
+		if not self.tag:
+			return f"ParentNode({self.tag}, {self.children}, {self.props})\n"
+		return f"ParentNode('{self.tag}', {self.children}, {self.props})\n"
