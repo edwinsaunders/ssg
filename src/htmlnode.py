@@ -38,7 +38,7 @@ class LeafNode(HTMLNode):
 
 
 	def to_html(self):
-		if not self.value:
+		if self.value == None:
 			raise ValueError('no value')
 		if not self.tag:
 			return self.value
@@ -71,7 +71,7 @@ class ParentNode(HTMLNode):
 
 		string = ""
 		for child in self.children:
-			print(child)
+			#print(child)
 			string += child.to_html()
 
 		if not self.props:
